@@ -9,6 +9,7 @@ import {
 import { PrimaryInputComponent } from '../../components/primary-input/primary-input.component';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private toastService: ToastrService
 
   ) {
     this.loginForm = new FormGroup({
@@ -38,8 +40,8 @@ export class LoginComponent {
     console.log(this.loginForm.value);
     this.loginService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(
       {
-        next:() => console.log("Login successful"),
-        error: (error) => console.log("Error: ", error)
+        next:() => this.toastService.success("Login successful"),
+        error: (error) => this.toastService.error("Login failed")
       }
     );
   }
